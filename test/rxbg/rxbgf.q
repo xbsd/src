@@ -1,3 +1,6 @@
+
+\l /home/softadmin/qutil.q
+
 getMkt:{exec distinct ROUTE_NAME from PR}
 
 getProds:{$[101h~type x;exec distinct PROPRIETARY_NAME from PR;exec distinct PROPRIETARY_NAME from PR where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
