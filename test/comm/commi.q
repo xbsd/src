@@ -1,5 +1,6 @@
 /Master Configuration File
 
+\c 10 30000
 srcDir:{"/app/kdb/src"}
 procFile: {raze x,"/test/comm/proctable.csv"}
 qArgs: {"-s 16"}
@@ -33,6 +34,8 @@ getAppParams: {prs:getProcs[]; defs: getDefs[x]; thisapp:prs[x]; :$[0=sum not nu
 
 startProc:{
  params:getAppParams[x];
+
+ show msger[x] "Executing Script ", string .z.f;
 
  show msger[x;] "Loading DB ",db:string params`dbDir;
  system "l ",db;
