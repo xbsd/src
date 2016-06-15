@@ -33,7 +33,7 @@ normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetyp
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
 getmt:{[ta] (,)/ [{[ta] tax: select col, act:metmap[cat] from ta where act=`met; {enlist (x 1;x 0)} each tax[;`col`act]} ta]}
-getag:{[xmet] ({x 1} each xmet)!xmet}
+getag:{[xmet] d0:({x 1} each xmet)!xmet;d1:({`$(upper string x 0),"_",(string x 1),"_"} each xmet)!xmet;`d0`d1!(d0;d1)}
 getgr:{[tb] (,)/ [(0!tb)`col]}
 
 /Accepts 1 item of the format "TAB:ACT:COL:CAT" and converts to table
@@ -51,10 +51,10 @@ run:{[od]
 
  ljt: getlj each (0!tb)[;`tab`col];
  xmet:getmt ta;
- btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;getag xmet);
+ btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;(getag xmet)`d0);
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
- ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;getag xmet]
+ ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;(getag xmet)`d1]
 
  }
 
