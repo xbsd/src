@@ -17,7 +17,7 @@ killScreen: {system "screen -ls | grep ",x," | cut -f1 -d'.' | sed 's/\\W//g' | 
 /Handlers
 
 /Takes session name as argument (eg., `rxbgtest)
-getH:{pr:getProcs[][x]; if[x~getCurrArgs[];:0]; handle:$[`localhost~pr[`host];hsym `$"unix://",string pr`port;hsym `$(string pr`host),":",(string pr`port)];:handle}
+getH:{pr:getProcs[][x]; if[x~`$(getCurrArgs[][`start])0;:0]; handle:$[`localhost~pr[`host];hsym `$"unix://",string pr`port;hsym `$(string pr`host),":",(string pr`port)];:handle}
 
 getCurrArgs:{.Q.opt .z.x}
 
