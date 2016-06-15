@@ -1,7 +1,7 @@
-session,env,port,dbDir,srcDir,logDir,taskSet
-rxbg,test,8010,/app/kdb/db/RXM,,,
-comm,test,8011,,,,
-rxqa,test,8013,/app/kdb/db/RXM,,,
+session,ta,env,host,port,dbDir,srcDir,logDir,taskSet
+rxbg,RXM,test,localhost,8010,/app/kdb/db/RXM,,,
+comm,,test,localhost,8011,,,,
+rxqa,RXM,test,localhost,8013,/app/kdb/db/RXM,,,
 # END CSV
 
 

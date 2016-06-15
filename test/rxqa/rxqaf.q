@@ -21,8 +21,7 @@ met:"RXM:TRX:met:sum"
 
 /Static
 tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
-thand:1!([]ts:getProcs[][`t];p:string each getProds[][`port])
-
+thand:1!([]ts:(0!getProcs[])[`ta];p:(0!getProcs[])[`port])
 
 /Metric Map
 metmap:`sum`avg`cdi!(sum;avg;(#:;(?:;`a)))
