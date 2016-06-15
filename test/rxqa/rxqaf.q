@@ -21,6 +21,8 @@ met:"RXM:TRX:met:sum"
 
 /Static
 tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
+thand:1!([]ts:getProcs[][`t];p:string each getProds[][`port])
+
 
 /Metric Map
 metmap:`sum`avg`cdi!(sum;avg;(#:;(?:;`a)))
@@ -40,6 +42,9 @@ getgr:{[tb] (,)/ [(0!tb)`col]}
 fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xgrp:`$$["," in xgrp 1;@[xgrp;1;:;"," vs xgrp 1];xgrp]; flip sch!enlist each xgrp}
 
 getft:{[bt;tb;xmet] g:(,)/ [(0!tb)`col]; ?[bt;();g!g]};
+gettd:{
+
+
 
 run:{[od] 
  d:normd od;
@@ -51,9 +56,9 @@ run:{[od]
 
  ljt: getlj each (0!tb)[;`tab`col];
  xmet:getmt ta;
-
+ btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;getag xmet);
  bt:?[`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;getag xmet];
- bt:(lj)/ [bt;ljt]
+ bt:(lj)/ [bt;ljt];
  ft:?[bt;();(getgr tb)!getgr tb;getag xmet]
 
  }
