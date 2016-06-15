@@ -34,6 +34,7 @@ getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
 getmt:{[ta] (,)/ [{[ta] tax: select col, act:metmap[cat] from ta where act=`met; {enlist (x 1;x 0)} each tax[;`col`act]} ta]}
 getag:{[xmet] ({x 1} each xmet)!xmet}
+getgr:{[tb] (,)/ [(0!tb)`col]}
 
 /Accepts 1 item of the format "TAB:ACT:COL:CAT" and converts to table
 fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xgrp:`$$["," in xgrp 1;@[xgrp;1;:;"," vs xgrp 1];xgrp]; flip sch!enlist each xgrp}
@@ -53,7 +54,7 @@ run:{[od]
  btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;getag xmet);
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
- ft:?[bt;();(getgr tb)!getgr tb;getag xmet]
+ ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;getag xmet]
 
  }
 

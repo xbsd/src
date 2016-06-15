@@ -21,10 +21,6 @@ getH:{pr:getProcs[][x]; if[x~`$(getCurrArgs[][`start])0;:0]; handle:$[`localhost
 
 getCurrArgs:{.Q.opt .z.x}
 
-/General Functions
-char2sym:{![x;();0b;c!{($;enlist`;x)}each c:exec c from meta x where t in"Cc"]}
-fillNullSym:{[t;c] filler:`$"NULL_",string c 0; ![t;();0b;c!(enlist (^;`filler;c 0))]} /Use as f[table;symcolumn as list]
-
 /Process File and Process Management
 readProcFile: {file:read0 hsym `$procFile srcDir[]}
 getProcs: {prs:readProcFile[]; csvf: prs where not any prs like/: ("#*";""); coln: 1 + count ss[(1#csvf)0;","]; :`senv xkey update senv:`$((string session),'(string env)) from (coln#"S";enlist ",") 0: csvf }
