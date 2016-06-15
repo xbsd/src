@@ -14,6 +14,12 @@ sendToScreen: {system raze "screen -S ",x," -p 0 -X stuff \"$(printf \\\\r)",y,"
 startCleanScreen: {killScreen x; createScreen x }
 killScreen: {system "screen -ls | grep ",x," | cut -f1 -d'.' | sed 's/\\W//g' | xargs kill -9; screen -wipe;true"}
 
+/Handlers
+
+/Takes session name as argument (eg., `rxbgtest)
+getH:{pr:getProcs[][x]; if[x~getCurrArgs[];:0]; handle:$[`localhost~pr[`host];hsym `$"unix://",string pr`port;hsym `$(string pr`host),":",(string pr`port)];:handle}
+
+getCurrArgs:{.Q.opt .z.x}
 
 /Process File and Process Management
 readProcFile: {file:read0 hsym `$procFile srcDir[]}
