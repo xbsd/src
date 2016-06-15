@@ -25,7 +25,6 @@ tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
 /Metric Map
 metmap:`sum`avg`cdi!(sum;avg;(#:;(?:;`a)))
 
-
 /Code
 
 normd:{[od] d:(`fn`user`dtt`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_ref`x_grp`x_piv`x_met];d[`stdt]:"D"$od`x_startdate; d[`endt]:"D"$od`x_enddate;:d}
@@ -40,7 +39,7 @@ getgr:{[tb] (,)/ [(0!tb)`col]}
 /Accepts 1 item of the format "TAB:ACT:COL:CAT" and converts to table
 fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xgrp:`$$["," in xgrp 1;@[xgrp;1;:;"," vs xgrp 1];xgrp]; flip sch!enlist each xgrp}
 
-getft:{[bt;tb;xmet] g:(,)/ [(0!tb)`col]; ?[bt;();g!g;
+getft:{[bt;tb;xmet] g:(,)/ [(0!tb)`col]; ?[bt;();g!g]};
 
 run:{[od] 
  d:normd od;
