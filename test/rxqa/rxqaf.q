@@ -32,7 +32,7 @@ normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetyp
 
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
-getmt:{[ta] (,)/ [{[ta] tax: select col, act:metmap[cat] from ta where act=`met; {enlist (x 1;x 0)} each tax[;`col`act]} ta]}
+getmt:{[ta] tax: select col, act:metmap[cat] from ta where act=`met; tax2: select col, act:metmap[cat] from ta where act=`dmt; res:(); [if[0<count tax;res,:{enlist (x 1;x 0)} each tax[;`col`act]; if[0<count tax2;res,:{enlist (x 1) x 0} each tax2[;`col`act]]]];:res}
 getag:{[xmet] d0:({x 1} each xmet)!xmet;d1:({`$(upper string x 0),"_",(string x 1),"_"} each xmet)!xmet;`d0`d1!(d0;d1)}
 getgr:{[tb] (,)/ [(0!tb)`col]}
 
