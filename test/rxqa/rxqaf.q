@@ -51,10 +51,10 @@ run:{[od]
 
  ljt: getlj each (0!tb)[;`tab`col];
  xmet:getmt ta;
- btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;(getag xmet)`d0);
+ btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;((,)/ [xmet`metc])!(,)/ [xmet`mets]);
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
- ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;(getag xmet)`d1]
+ ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a]
 
  }
 
