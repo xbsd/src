@@ -24,7 +24,7 @@ tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
 fhand:{prs:`ta xkey getProcs[]; }
 
 /Metric Map
-metmap:`sum`avg`cdi!(sum;avg;(#:;(?:;`a)))
+metmap:`sum`avg`cdi!(sum;avg;{(#:;(?:;x))})
 
 /Code
 
