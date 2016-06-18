@@ -41,6 +41,8 @@ fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xg
 
 getbt:{?[x`ta;x`c;x`b;x`a]}
 
+getmt2:{[ta] tax:select from ta where act in `met`dmt; td:tax[;`col`act`cat]; {$[`met~x 1; (enlist (x 0; metmap[x 2])); `dmt~x 1; enlist (metmap[x 2]) x 0]} each (tax[;`col`act`cat])}
+
 run:{[od] 
  d:normd od;
 
@@ -50,7 +52,7 @@ run:{[od]
  ts:(`ta`tb!(ta;tb));
 
  ljt: getlj each (0!tb)[;`tab`col];
- xmet:getmt ta;
+ xmet:getmt2 ta;
  btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;((,)/ [xmet`metc])!(,)/ [xmet`mets]);
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
