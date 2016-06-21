@@ -5,7 +5,7 @@
 
 getMkt:{exec distinct ROUTE_NAME from PR}
 
-getProds:{$[101h~type x;exec distinct PROPRIETARY_NAME from PR;exec distinct PROPRIETARY_NAME from PR where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
+getProds:{$[(101h~type x) or (not `market in key .j.k x);exec distinct PROPRIETARY_NAME from PR;exec distinct PROPRIETARY_NAME from PR where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
 
 json1:{"{ id: \"",x,"\", text: \"",x,"\"}"}; 
 
