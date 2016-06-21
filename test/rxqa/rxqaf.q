@@ -61,7 +61,7 @@ dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
 
 execdict:getRes:{[d] run $[10h~type d;.j.k d;d]}
-execute:{[json] d:.j.k json; (eval parse -2_d`x_fn)[json]}
+execute:{[serialisedjson] json:-9!serialisedjson; d:.j.k json; (eval parse -2_d`x_fn)[json]}
 
 run:{[od] 
  d:normd od;
