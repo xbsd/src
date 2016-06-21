@@ -36,19 +36,19 @@ normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetyp
 mknorm:{[d] if[not `nd in key d;d:normd d];:d}
 
 /Filters
-filta:{[d] d:mknorm d; sch:`tab`col`act`cat`ok`ov`ty;spr:string sd:getne[d;"PR:*"];res:raze {[d;sch;x]sch:`tab`col`act`cat`ok`ov`ty; flip sch!ens each (`$":" vs x),(`$x),(enlist d `$x),(string fmt[`$(":" vs x)0;`$(":" vs x)1])}[d;sch;] each spr;$[not count res;:flip sch!enlist each 7#`]}
+filta:{[d] d:mknorm d; sch:`tab`col`act`cat`ok`ov`ty;spr:string sd:getne[d;"PR:*"];res:raze {[d;sch;x]sch:`tab`col`act`cat`ok`ov`ty; flip sch!ens each (`$":" vs x),(`$x),(enlist d `$x),(string fmt[`$(":" vs x)0;`$(":" vs x)1])}[d;sch;] each spr;$[not count res;:flip sch!enlist each 7#`;:res]}
 
 crpt:{[t;x;vdx;ty] enlist $[ty in "sS";(in;x;ens `$vdx);ty in "Cc";(like;x;vdx);(in;x;ty$vdx)]}
-crfl:{[d;t] ftdfull:(filta d); ftd:select from ftdfull where tab=t; {crpt[x 0; x 1; x 2; x 3]} each ftd[;`tab`col`ov`ty]}
+crfl:{[d;t] ftdfull:(filta d); ftd:select from ftdfull where tab=t; raze {crpt[x 0; x 1; x 2; x 3]} each ftd[;`tab`col`ov`ty]}
 
 /Create Parse Tree for Product
-getPRID:{[d] prpt:crfl[d;`PR]; 
+getPRID:{[d] prpt:crfl[d;`PR];$[count prpt;?[`PR;prpt;();`PRID];]}
 
 k)ens:{$[(1=#x)&(11h~@x);x;,x]}
 fmt:{[t;x] upper (exec t from meta t where c=x)0}
 getPR:{[d] d:mknorm d; prc:getne[d;"PR:*"];}
 
-getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); if[not 0h~filta d; pt,:raze crfl d];:pt}
+getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); prid:getPRID d; if[not 101h~type prid;pt,:enlist (in;`PRID;prid)];:pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
 getmt:{[ta] t:select from ta where act=`met; raze {(enlist x 0)!enlist metmap[x 1] x 0} each t[;`col`cat]}
 getgr:{[tb] (,)/ [(0!tb)`col]}
