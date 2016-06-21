@@ -30,9 +30,11 @@ metmap:`sum`avg`cdi!({(sum;x)};{(avg;x)};{(#:;(?:;x))})
 
 /Code
 getne:getnonempty:{(key x) where ((key x) like y) and (count each value x) > 0}
-getfil:{[od] ne!od[ne:getne[od;"*fil:x"]]}
-normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];d[`nd]:`Y;d,:getfil[od];:d}
+getfilod:{ne!od[ne:getne[od;"*fil:x"]]}
+getfil:{[d] d:mknorm d; ne!d[ne:getne[d;"*fil:x"]]}
+normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];d[`nd]:`Y;d,:getfilod[od];:d}
 mknorm:{[d] if[not `nd in key d;d:normd d];:d}
+filta:{[d] d:mknorm d; spr:string sd:getne[d;"PR:*"];raze {[d;x]sch:`tab`col`act`cat`ok`ov; flip sch!ens each (`$":" vs x),(`$x),(enlist d `$x)}[d;] each spr}
 
 k)ens:{$[(1=#x)&(11h~@x);x;,x]}
 fmt:{[t;x] upper (exec t from meta t where c=x)0}
