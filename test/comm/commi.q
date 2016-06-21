@@ -1,7 +1,7 @@
 /Master Configuration File
 
 /Load Helper Functions
-/\l commhelper.q
+\l /app/kdb/src/test/comm/commhelper.q
 
 \c 10 30000
 srcDir:{"/app/kdb/src"}
