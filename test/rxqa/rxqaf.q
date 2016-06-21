@@ -24,7 +24,7 @@ tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
 fhand:{prs:`ta xkey getProcs[]; }
 
 /Metric Map
-metmap:`sum`avg`cdi!(sum;avg;{(#:;(?:;x))})
+metmap:`sum`avg`cdi!({(sum;x)};{(avg;x)};{(#:;(?:;x))})
 
 /Code
 
@@ -32,16 +32,13 @@ normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetyp
 
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
-getmt:{[ta] tax: select col, act:metmap[cat] from ta where act=`met; tax2: select col, cat, act:metmap[cat] from ta where act=`dmt; res:(); [if[0<count tax;res,:{(enlist (x 1;x 0);mthelper x)} each tax[;`col`act]; if[0<count tax2;res,:{(enlist (x 1) x 0;mthelper [(x 0;x 2)])} each tax2[;`col`act`cat]]]];: `mets`metc!(res[;0];res[;1])}
-getag:{[xmet] d0:({x 1} each xmet)!xmet;d1:({`$(upper string x 0),"_",(string x 1),"_"} each xmet)!xmet;`d0`d1!(d0;d1)}
+getmt:{[ta] t:select from ta where act=`met; raze {(enlist x 0)!enlist metmap[x 1] x 0} each t[;`col`cat]}
 getgr:{[tb] (,)/ [(0!tb)`col]}
 
 /Accepts 1 item of the format "TAB:ACT:COL:CAT" and converts to table
 fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xgrp:`$$["," in xgrp 1;@[xgrp;1;:;"," vs xgrp 1];xgrp]; flip sch!enlist each xgrp}
 
 getbt:{?[x`ta;x`c;x`b;x`a]}
-
-getmt2:{[ta] tax:select from ta where act in `met`dmt; td:tax[;`col`act`cat]; {$[`met~x 1; (enlist (x 0; metmap[x 2])); `dmt~x 1; enlist (metmap[x 2]) x 0]} each (tax[;`col`act`cat])}
 
 run:{[od] 
  d:normd od;
@@ -52,11 +49,12 @@ run:{[od]
  ts:(`ta`tb!(ta;tb));
 
  ljt: getlj each (0!tb)[;`tab`col];
- xmet:getmt2 ta;
- btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;((,)/ [xmet`metc])!(,)/ [xmet`mets]);
+ xmet:getmt ta;
+ btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;xmet);
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
- ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a]
+ ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a];
+ :ft
 
  }
 
