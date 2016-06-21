@@ -53,7 +53,7 @@ fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xg
 /Accepts 1 item of format "TAB:ACT:COL:CAT" from d and converts to table
 dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
-getcolt:{exec from x where col=y}
+getcolt:{[x;y] exec col from x where act=y}
 
 execdict:getRes:{[d] res:run $[10h~type d;.j.k d;d];show select[5] from res;:res}
 execute:{[serialisedjson] json:-9!serialisedjson; d:.j.k json; (eval parse -2_d`x_fn)[json]}
@@ -69,7 +69,7 @@ run:{[od]
  ljt: getlj each (0!tb)[;`tab`col];
  xmet:getmt ta;
  btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act in `grp`piv;xmet);
- pivd:`k`p`v`dataDict`f`g!(exec from ta where act=`grp;exec from ta where act=`piv;
+ pivd:`k`p`v`dataDict`f`g!(getcolt[ta;] each `grp`piv`met;
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
  ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a];
