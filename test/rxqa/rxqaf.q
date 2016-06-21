@@ -35,7 +35,7 @@ normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetyp
 mknorm:{[d] if[not `nd in key d;d:normd d];:d}
 
 fmt:{[t;x] upper (exec t from meta t where c=y)0}
-getPR:{[d] d:mknorm d; prc:getne[d;"PR:*"];
+getPR:{[d] d:mknorm d; prc:getne[d;"PR:*"];}
 
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
@@ -46,7 +46,7 @@ getgr:{[tb] (,)/ [(0!tb)`col]}
 fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xgrp:`$$["," in xgrp 1;@[xgrp;1;:;"," vs xgrp 1];xgrp]; flip sch!enlist each xgrp}
 
 /Accepts 1 item of format "TAB:ACT:COL:CAT" from d and converts to table
-dgen:{[d] d:mknorm d; 
+dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
 
 run:{[od] 
