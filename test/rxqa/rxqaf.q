@@ -30,7 +30,7 @@ metmap:`sum`avg`cdi!({(sum;x)};{(avg;x)};{(#:;(?:;x))})
 
 /Code
 getne:{(key x) where ((key x) like y) and (count each value x) > 0}
-getfilod:{ne!od[ne:getne[od;"*fil:x"]]}
+getfilod:{[od] ne!od[ne:getne[od;"*fil:x"]]}
 getfil:{[d] d:mknorm d; ne!d[ne:getne[d;"*fil:x"]]}
 normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];d[`nd]:`Y;d,:getfilod[od];:d}
 mknorm:{[d] if[not `nd in key d;d:normd d];:d}
@@ -59,6 +59,9 @@ fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xg
 /Accepts 1 item of format "TAB:ACT:COL:CAT" from d and converts to table
 dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
+
+execdict:getRes:{[d] run $[10h~type d;.j.k d;d]}
+execute:{[json] d:.j.k json; (eval parse -2_d`x_fn)[json]}
 
 run:{[od] 
  d:normd od;
