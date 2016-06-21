@@ -14,7 +14,7 @@ getProdJSON:{[d] d:$[101h~type d;{x:()!();x[`market]:x[`product]:"";:x}[];.j.k d
 
 asis:{eval parse x`query};
 
-fnt:([]f:`execte`asis`getMkt`getProds`getProdJSON;v:(execute;asis;getMkt;getProds;getProdJSON))
+fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
 
 /Env Vars
 grp:"PH:PHID,CITY:grp:x;PL:PLID:grp:x;PL:PLAN_TYPE:grp:x"

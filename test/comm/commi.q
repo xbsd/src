@@ -98,7 +98,7 @@ args:.Q.opt .z.x
 keyargs:key args
 
 if[`startall in keyargs; startShellProc each exec senv from getProcs[]];
-if[`start in keyargs;startProc `$args[`start]0];
-if[`exit in keyargs;exit 0];
+if[`start in keyargs;startShellProc `$args[`start]0];
+/if[`exit in keyargs;exit 0];
 
 
