@@ -55,6 +55,7 @@ dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
 getcolt:{[x;y] exec col from x where act=y}
 modmet:{(enlist x)!enlist `$(string x),"_"}
+dataDict:raze modmet each `NRX`NQTY`NFACT_QTY`TRX`TQTY`TFACT_QTY;
 
 getPiv:{[ta] dataDict:raze modmet each getcolt[ta;`met]; `k`p`v`dataDict`f`g!(getcolt[ta;] each `grp`piv`met),(enlist dataDict),{[v;P];`$raze (string each dataDict[v]),/:\:("_"sv'string P)},{[k;P;c]k,c}}
 
@@ -75,6 +76,8 @@ run:{[od]
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
  ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a];
+ pivd:getPiv ta;
+ if[any ta[`act]=`piv;ft:piv2[0!ft;pivd`k;pivd`p;pivd`v;dataDict;pivd`f;pivd`g]];
  :ft
 
  }
