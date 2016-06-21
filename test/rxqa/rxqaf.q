@@ -29,8 +29,13 @@ fhand:{prs:`ta xkey getProcs[]; }
 metmap:`sum`avg`cdi!({(sum;x)};{(avg;x)};{(#:;(?:;x))})
 
 /Code
+getne:getnonempty:{(key x) where ((key x) like y) and (count each value x) > 0}
+getfil:{[od] ne!od[ne:getne[od;"*fil:x"]]}
+normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];d[`nd]:`Y;d,:getfil[od];:d}
+mknorm:{[d] if[not `nd in key d;d:normd d];:d}
 
-normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];:d}
+fmt:{[t;x] upper (exec t from meta t where c=y)0}
+getPR:{[d] d:mknorm d; prc:getne[d;"PR:*"];
 
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
@@ -40,6 +45,8 @@ getgr:{[tb] (,)/ [(0!tb)`col]}
 /Accepts 1 item of the format "TAB:ACT:COL:CAT" and converts to table
 fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xgrp:`$$["," in xgrp 1;@[xgrp;1;:;"," vs xgrp 1];xgrp]; flip sch!enlist each xgrp}
 
+/Accepts 1 item of format "TAB:ACT:COL:CAT" from d and converts to table
+dgen:{[d] d:mknorm d; 
 getbt:{?[x`ta;x`c;x`b;x`a]}
 
 run:{[od] 
