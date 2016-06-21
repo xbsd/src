@@ -66,7 +66,8 @@ startProc:{
  system "l ",fnFile;
  }
 
-startShellProc: {strx: $[-11h~type x;string x;x];
+startShellProc: {
+ strx: $[-11h~type x;string x;x];
  symx: $[-11h~type x;x;`$x];
  params:getAppParams symx;
  startCleanScreen strx;
@@ -98,5 +99,5 @@ args:.Q.opt .z.x
 keyargs:key args
 
 if[`startall in keyargs; startShellProc each exec senv from getProcs[]];
-if[`start in keyargs; show "here";startShellProc (`$args[`start])0];
+if[`start in keyargs;startProc `$args[`start]0];
 if[`exit in keyargs;exit 0];
