@@ -1,7 +1,7 @@
 
 \l /home/softadmin/qutil.q
 \c 20 30000
-.z.pp:{seralisedjson:-8!.h.uh x 0;show serialisedjson; .z.ph[ raze ".jxo? execute 0x",string serialisedjson]}
+.z.pp:{show x;seralisedjson:-8!.h.uh x 0;show serialisedjson; .z.ph[ raze ".jxo? execute 0x",string serialisedjson]}
 
 getMkt:{exec distinct ROUTE_NAME from PR}
 

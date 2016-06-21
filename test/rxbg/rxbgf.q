@@ -1,11 +1,11 @@
 
 \l /home/softadmin/qutil.q
 \c 20 30000
-.z.pp:{seralisedjson:-8!.h.uh x 0;show serialisedjson; .z.ph[ raze ".jxo? execute 0x",string serialisedjson]}
+.z.pp:{ser:-8!.h.uh x 0;show ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
 
 getMkt:{exec distinct ROUTE_NAME from PR}
 
-getProds:{$[(101h~type x) or (not `market in key .j.k x);exec distinct PROPRIETARY_NAME from PR;exec distinct PROPRIETARY_NAME from PR where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
+getProds:{$[(101h~type x);exec distinct PROPRIETARY_NAME from PR;exec distinct PROPRIETARY_NAME from PR where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
 
 json1:{"{ id: \"",x,"\", text: \"",x,"\"}"}; 
 
@@ -59,7 +59,7 @@ fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xg
 dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
 
-execdict:getRes:{[d] run $[10h~type d;.j.k d;d]}
+execdict:getRes:{[d] res:run $[10h~type d;.j.k d;d];show select[5] from res;:res}
 execute:{[serialisedjson] json:-9!serialisedjson; d:.j.k json; (eval parse -2_d`x_fn)[json]}
 
 run:{[od] 
