@@ -15,11 +15,6 @@ asis:{eval parse x`query};
 
 fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
 
-/Env Vars
-grp:"PH:PHID,CITY:grp:x;PL:PLID:grp:x;PL:PLAN_TYPE:grp:x"
-piv:"PH:STATE:piv:x"
-met:"RXM:TRX:met:sum"
-
 /Static
 tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
 fhand:{prs:`ta xkey getProcs[]; }
