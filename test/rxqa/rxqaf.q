@@ -34,7 +34,8 @@ getfil:{[od] ne!od[ne:getne[od;"*fil:x"]]}
 normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];d[`nd]:`Y;d,:getfil[od];:d}
 mknorm:{[d] if[not `nd in key d;d:normd d];:d}
 
-fmt:{[t;x] upper (exec t from meta t where c=y)0}
+k)ens:{$[(1=#x)&(11h~@x);x;,x]}
+fmt:{[t;x] upper (exec t from meta t where c=x)0}
 getPR:{[d] d:mknorm d; prc:getne[d;"PR:*"];}
 
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); :pt}
