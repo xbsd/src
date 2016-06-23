@@ -25,6 +25,8 @@ getH:{pr:getProcs[][x]; if[x~`$(getCurrArgs[][`start])0;:0]; handle:$[`localhost
 getCurrArgs:{.Q.opt .z.x}
 
 /Helper Functions
+removeNonAlphaNumeric:{`char$((`int$x) inter `int$.Q.A,.Q.a,"0123456789")}
+
 /General Functions
 
 /Convert Char Cols to Sym
