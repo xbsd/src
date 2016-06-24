@@ -1,7 +1,7 @@
 
-\l /home/softadmin/qutil.q
+\l /app/kscripts/qutil.q
 \c 20 30000
-.z.pp:{ser:-8!.h.uh x 0;show ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
+.z.pp:{show x; ser:-8!.h.uh x 0;show raze "0x",string ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
 
 getMkt:{exec distinct ROUTE_NAME from PR}
 
