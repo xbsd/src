@@ -1,27 +1,26 @@
 
-\l /home/softadmin/qutil.q
+\l /app/kscripts/qutil.q
 \c 20 30000
-.z.pp:{show x;seralisedjson:-8!.h.uh x 0;show serialisedjson; .z.ph[ raze ".jxo? execute 0x",string serialisedjson]}
 
-getMkt:{exec distinct ROUTE_NAME from PR}
+.z.pp:{show x; ser:-8!.h.uh x 0;show raze "0x",string ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
 
-getProds:{$[(101h~type x);exec distinct PROPRIETARY_NAME from PR;exec distinct PROPRIETARY_NAME from PR where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
+execute:{[ser] json:$[4h~abs type ser;-9!ser;value[-9!ser]]; d:@[.j.k;json;0Ni]; $[-6h~type d; value[-9!ser]; not `x_fn in key d; value[-9!ser]; (eval parse d`x_fn)[json]]}
+
+/Universal Search and String Replace (in JSON)
+k)ussr:{d:-29!$[4h~abs @x;-9!x;x]; f:{.q.ssr[x;y 0;y 1]}; -6!.q.parse f/ [(,d`qsql),{[d;x] ($x;$[1=#v:d x;v 0;d x])}[d;]'!(`qsql,`$"x_fn") _d]}
+
+getProds:{$[(101h~type x);exec distinct PROPRIETARY_NAME from PRODUCT;exec distinct PROPRIETARY_NAME from PRODUCT where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
 
 json1:{"{ id: \"",x,"\", text: \"",x,"\"}"}; 
 
-getProdJSON:{[d] d:$[101h~type d;{x:()!();x[`market]:x[`product]:"";:x}[];.j.k d]; mkt:$[""~d`market; exec ROUTE_NAME from PR;`$";" vs d`market]; prod:$[""~d`product; exec PROPRIETARY_NAME from PR;`$";" vs d`product]; Prx: 0!select distinct FN:(((string PROPRIETARY_NAME),\:"-"),'(string ACTIVE_NUMERATOR_STRENGTH)) by string PROPRIETARY_NAME from PR where ROUTE_NAME in mkt, PROPRIETARY_NAME in prod; : "[",("," sv {("{text:\"",(x`PROPRIETARY_NAME),"\",children:["),("," sv json1 each x`FN),"]}"} each Prx),"]"}
+getProdJSON:{[d] d:$[101h~type d;{x:()!();x[`market]:x[`product]:"";:x}[];.j.k d]; mkt:$[""~d`market; exec ROUTE_NAME from PRODUCT;`$";" vs d`market]; prod:$[""~d`product; exec PROPRIETARY_NAME from PRODUCT;`$";" vs d`product]; Prx: 0!select distinct FN:(((string PROPRIETARY_NAME),\:"-"),'(string ACTIVE_NUMERATOR_STRENGTH)) by string PROPRIETARY_NAME from PRODUCT where ROUTE_NAME in mkt, PROPRIETARY_NAME in prod; : "[",("," sv {("{text:\"",(x`PROPRIETARY_NAME),"\",children:["),("," sv json1 each x`FN),"]}"} each Prx),"]"}
 
-asis:{eval parse x`query};
+asis:{eval parse (.j.k x)`query} /x=json with x_fn=asis[] and query=" Q Query "
 
-fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
-
-/Env Vars
-grp:"PH:PHID,CITY:grp:x;PL:PLID:grp:x;PL:PLAN_TYPE:grp:x"
-piv:"PH:STATE:piv:x"
-met:"RXM:TRX:met:sum"
+/fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
 
 /Static
-tattr:1!([]ts:`PH`PL`PR`PE;ke:`PHID`PLID`PRID`month)
+tattr:1!([]ts:`PRESCRIBER`PLAN`PRODUCT`PERIOD;ke:`PHID`PLID`PRID`month)
 fhand:{prs:`ta xkey getProcs[]; }
 
 /Metric Map
@@ -41,11 +40,11 @@ crpt:{[t;x;vdx;ty] enlist $[ty in "sS";(in;x;ens `$vdx);ty in "Cc";(like;x;vdx);
 crfl:{[d;t] ftdfull:(filta d); ftd:select from ftdfull where tab=t; raze {crpt[x 0; x 1; x 2; x 3]} each ftd[;`tab`col`ov`ty]}
 
 /Create Parse Tree for Product
-getPRID:{[d] prpt:crfl[d;`PR];$[count prpt;?[`PR;prpt;();`PRID];]}
+getPRID:{[d] prpt:crfl[d;`PRODUCT];$[count prpt;?[`PRODUCT;prpt;();`PRID];]}
 
 k)ens:{$[(1=#x)&(11h~@x);x;,x]}
 fmt:{[t;x] upper (exec t from meta t where c=x)0}
-getPR:{[d] d:mknorm d; prc:getne[d;"PR:*"];}
+getPR:{[d] d:mknorm d; prc:getne[d;"PRODUCT:*"];}
 
 getpt:{[d] pt:enlist (within;`month;(enlist;d`stdt;d`endt)); prid:getPRID d; if[not 101h~type prid;pt,:enlist (in;`PRID;prid)];:pt}
 getlj:{1!?[x 0;();0b;x1!x1:distinct (tattr[x 0][`ke]),x 1]}
@@ -58,9 +57,13 @@ fgen:{sch:`tab`col`act`cat; if[""~x;:flip sch!enlist each 4#`];xgrp:":" vs x; xg
 /Accepts 1 item of format "TAB:ACT:COL:CAT" from d and converts to table
 dgen:{[d] d:mknorm d; }
 getbt:{?[x`ta;x`c;x`b;x`a]}
+getcolt:{[x;y] exec col from x where act=y}
+modmet:{(enlist x)!enlist `$(string x),"_"}
+dataDict:raze modmet each `NRX`NQTY`NFACT_QTY`TRX`TQTY`TFACT_QTY;
 
-execdict:getRes:{[d] run $[10h~type d;.j.k d;d]}
-execute:{[serialisedjson] json:-9!serialisedjson; d:.j.k json; (eval parse -2_d`x_fn)[json]}
+getPiv:{[ta] dataDict:raze modmet each getcolt[ta;`met]; `k`p`v`dataDict`f`g!(getcolt[ta;] each `grp`piv`met),(enlist dataDict),{[v;P];`$raze (string each dataDict[v]),/:\:("_"sv'string P)},{[k;P;c]k,c}}
+
+execdict:getRes:{[d] res:run $[10h~type d;.j.k d;d];show select[5] from res;:res}
 
 run:{[od] 
  d:normd od;
@@ -72,13 +75,13 @@ run:{[od]
 
  ljt: getlj each (0!tb)[;`tab`col];
  xmet:getmt ta;
- btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act=`grp;xmet);
+ btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act in `grp`piv;xmet);
  bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
  bt:(lj)/ [bt;ljt];
  ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a];
+ pivd:getPiv ta;
+ if[any ta[`act]=`piv;ft:piv2[0!ft;pivd`k;pivd`p;pivd`v;dataDict;pivd`f;pivd`g]];
  :ft
 
  }
-
-/od:.j.k "{\"x_fn\": \"execdict\", \"x_user\": \"raj\", \"x_ref\": \"month\", \"x_datetype\": \"current3\", \"x_startdate\": \"2018.01.01\", \"x_enddate\":\"2018.03.01\", \"x_grp\":\"PH:STATE:grp:x;PR:PROPRIETARY_NAME,DEA_SCHEDULE:grp:x\", \"x_met\":\"RXM:TRX:met:sum;RXM:NRX:met:sum\", \"x_piv\":\"PE:YEAR:grp:x\"}"
 
