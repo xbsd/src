@@ -1,9 +1,13 @@
 
 \l /app/kscripts/qutil.q
 \c 20 30000
+
 .z.pp:{show x; ser:-8!.h.uh x 0;show raze "0x",string ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
 
-getMkt:{exec distinct ROUTE_NAME from PRODUCT}
+execute:{[ser] json:$[4h~abs type ser;-9!ser;value[-9!ser]]; d:@[.j.k;json;0Ni]; $[-6h~type d; value[-9!ser]; not `x_fn in key d; value[-9!ser]; (eval parse d`x_fn)[json]]}
+
+/Universal Search and String Replace (in JSON)
+k)ussr:{d:-29!x; f:{.q.ssr[x;y 0;y 1]}; -6!.q.parse f/ [(,d`qsql),{[d;x] ($x;$[1=#v:d x;v 0;d x])}[d;]'!(`qsql,`$"x_fn") _d]}
 
 getProds:{$[(101h~type x);exec distinct PROPRIETARY_NAME from PRODUCT;exec distinct PROPRIETARY_NAME from PRODUCT where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
 
@@ -13,7 +17,7 @@ getProdJSON:{[d] d:$[101h~type d;{x:()!();x[`market]:x[`product]:"";:x}[];.j.k d
 
 asis:{eval parse (.j.k x)`query} /x=json with x_fn=asis[] and query=" Q Query "
 
-fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
+/fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
 
 /Static
 tattr:1!([]ts:`PRESCRIBER`PLAN`PRODUCT`PERIOD;ke:`PHID`PLID`PRID`month)
