@@ -7,7 +7,7 @@
 execute:{[ser] json:$[4h~abs type ser;-9!ser;value[-9!ser]]; d:@[.j.k;json;0Ni]; $[-6h~type d; value[-9!ser]; not `x_fn in key d; value[-9!ser]; (eval parse d`x_fn)[json]]}
 
 /Universal Search and String Replace (in JSON)
-k)ussr:{d:-29!x; f:{.q.ssr[x;y 0;y 1]}; -6!.q.parse f/ [(,d`qsql),{[d;x] ($x;$[1=#v:d x;v 0;d x])}[d;]'!(`qsql,`$"x_fn") _d]}
+k)ussr:{d:-29!$[4h~abs @x;-9!x;x]; f:{.q.ssr[x;y 0;y 1]}; -6!.q.parse f/ [(,d`qsql),{[d;x] ($x;$[1=#v:d x;v 0;d x])}[d;]'!(`qsql,`$"x_fn") _d]}
 
 getProds:{$[(101h~type x);exec distinct PROPRIETARY_NAME from PRODUCT;exec distinct PROPRIETARY_NAME from PRODUCT where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
 
@@ -64,7 +64,6 @@ dataDict:raze modmet each `NRX`NQTY`NFACT_QTY`TRX`TQTY`TFACT_QTY;
 getPiv:{[ta] dataDict:raze modmet each getcolt[ta;`met]; `k`p`v`dataDict`f`g!(getcolt[ta;] each `grp`piv`met),(enlist dataDict),{[v;P];`$raze (string each dataDict[v]),/:\:("_"sv'string P)},{[k;P;c]k,c}}
 
 execdict:getRes:{[d] res:run $[10h~type d;.j.k d;d];show select[5] from res;:res}
-execute:{[serialisedjson] json:-9!serialisedjson; d:.j.k json; (eval parse -2_d`x_fn)[json]}
 
 run:{[od] 
  d:normd od;
