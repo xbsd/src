@@ -17,6 +17,13 @@ sendToScreen: {system raze "screen -S ",x," -p 0 -X stuff \"$(printf \\\\r)",y,"
 startCleanScreen: {killScreen x; createScreen x }
 killScreen: {system "screen -ls | grep ",x," | cut -f1 -d'.' | sed 's/\\W//g' | xargs kill -9; screen -wipe;true"}
 
+/.z.pp modifiers
+.z.pp:{show x; ser:-8!.h.uh x 0;show raze "0x",string ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
+execute:{[ser] json:$[4h~abs type ser;-9!ser;value[-9!ser]]; d:@[.j.k;json;0Ni]; $[-6h~type d; value[-9!ser]; not `x_fn in key d; value[-9!ser]; (eval parse d`x_fn)[json]]}
+
+/Universal Search and String Replace (in JSON)
+k)ussr:{d:-29!$[4h~abs @x;-9!x;x]; f:{.q.ssr[x;y 0;y 1]}; -6!.q.parse f/ [(,d`qsql),{[d;x] ($x;$[1=#v:d x;v 0;d x])}[d;]'!(`qsql,`$"x_fn") _d]}
+
 /Handlers
 
 /Takes session name as argument (eg., `rxbgtest)
