@@ -8,9 +8,7 @@ json1:{"{ id: \"",x,"\", text: \"",x,"\"}"};
 
 getProdJSON:{[d] d:$[101h~type d;{x:()!();x[`market]:x[`product]:"";:x}[];.j.k d]; mkt:$[""~d`market; exec ROUTE_NAME from PRODUCT;`$";" vs d`market]; prod:$[""~d`product; exec PROPRIETARY_NAME from PRODUCT;`$";" vs d`product]; Prx: 0!select distinct FN:(((string PROPRIETARY_NAME),\:"-"),'(string ACTIVE_NUMERATOR_STRENGTH)) by string PROPRIETARY_NAME from PRODUCT where ROUTE_NAME in mkt, PROPRIETARY_NAME in prod; : "[",("," sv {("{text:\"",(x`PROPRIETARY_NAME),"\",children:["),("," sv json1 each x`FN),"]}"} each Prx),"]"}
 
-asis:{eval parse (.j.k x)`query} /x=json with x_fn=asis[] and query=" Q Query "
-
-/fnt:([]f:`asis`getMkt`getProds`getProdJSON;v:(asis;getMkt;getProds;getProdJSON))
+asis:{eval parse (.j.k x)`qsql} /x=json with x_fn=asis[] and qsql=" Q Query "
 
 /Static
 tattr:1!([]ts:`PRESCRIBER`PLAN`PRODUCT`PERIOD;ke:`PHID`PLID`PRID`month)
