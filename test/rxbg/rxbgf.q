@@ -2,13 +2,6 @@
 \l /app/kscripts/qutil.q
 \c 20 30000
 
-.z.pp:{show x; ser:-8!.h.uh x 0;show raze "0x",string ser; .z.ph[ raze ".jxo? execute 0x",string ser]}
-
-execute:{[ser] json:$[4h~abs type ser;-9!ser;value[-9!ser]]; d:@[.j.k;json;0Ni]; $[-6h~type d; value[-9!ser]; not `x_fn in key d; value[-9!ser]; (eval parse d`x_fn)[json]]}
-
-/Universal Search and String Replace (in JSON)
-k)ussr:{d:-29!$[4h~abs @x;-9!x;x]; f:{.q.ssr[x;y 0;y 1]}; -6!.q.parse f/ [(,d`qsql),{[d;x] ($x;$[1=#v:d x;v 0;d x])}[d;]'!(`qsql,`$"x_fn") _d]}
-
 getProds:{$[(101h~type x);exec distinct PROPRIETARY_NAME from PRODUCT;exec distinct PROPRIETARY_NAME from PRODUCT where ROUTE_NAME in `$";" vs (.j.k x)[`market]]}
 
 json1:{"{ id: \"",x,"\", text: \"",x,"\"}"}; 
