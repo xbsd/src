@@ -30,11 +30,13 @@ metmap:`sum`avg`cdi!({(sum;x)};{(avg;x)};{(#:;(?:;x))})
 getne:{(key x) where ((key x) like y) and (count each value x) > 0}
 getfilod:{[od] ne!od[ne:getne[od;"*fil:x"]]}
 getfil:{[d] d:mknorm d; ne!d[ne:getne[d;"*fil:x"]]}
+
 normd:{[od] d:(`fn`user`dtt`start`end`ref`grp`piv`met)!od[`x_fn`x_user`x_datetype`x_startdate`x_enddate`x_ref`x_grp`x_piv`x_met];d[`stdt]:"M"$od`x_startdate; d[`endt]:"M"$od`x_enddate;if[d[`dtt] like "current*";ms:(neg "I"$ ssr[d[`dtt];"current";""])#month;d[`stdt]:first ms;d[`endt]:last ms];d[`nd]:`Y;d,:getfilod[od];:d}
+
 mknorm:{[d] if[not `nd in key d;d:normd d];:d}
 
 /Filters
-filta:{[d] d:mknorm d; sch:`tab`col`act`cat`ok`ov`ty;spr:string sd:getne[d;"PR:*"];res:raze {[d;sch;x]sch:`tab`col`act`cat`ok`ov`ty; flip sch!ens each (`$":" vs x),(`$x),(enlist d `$x),(string fmt[`$(":" vs x)0;`$(":" vs x)1])}[d;sch;] each spr;$[not count res;:flip sch!enlist each 7#`;:res]}
+filta:{[d] d:mknorm d; sch:`tab`col`act`cat`ok`ov`ty;spr:string sd:getne[d;"PRODUCT:*"];res:raze {[d;sch;x]sch:`tab`col`act`cat`ok`ov`ty; flip sch!ens each (`$":" vs x),(`$x),(enlist d `$x),(string fmt[`$(":" vs x)0;`$(":" vs x)1])}[d;sch;] each spr;$[not count res;:flip sch!enlist each 7#`;:res]}
 
 crpt:{[t;x;vdx;ty] enlist $[ty in "sS";(in;x;ens `$vdx);ty in "Cc";(like;x;vdx);(in;x;ty$vdx)]}
 crfl:{[d;t] ftdfull:(filta d); ftd:select from ftdfull where tab=t; raze {crpt[x 0; x 1; x 2; x 3]} each ftd[;`tab`col`ov`ty]}
@@ -75,8 +77,8 @@ run:{[od]
 
  ljt: getlj each (0!tb)[;`tab`col];
  xmet:getmt ta;
- btd:`ta`c`b`a!(`RXM;getpt d;gr!gr:exec distinct ke from ta where act in `grp`piv;xmet);
- bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxqatest;btd];
+ btd:`ta`c`b`a!(`RX_MONTH;getpt d;gr!gr:exec distinct ke from ta where act in `grp`piv;xmet);
+ bt:{[x;btd] h:getH x;res:h (getbt;btd);:res} [`rxbgtest;btd];
  bt:(lj)/ [bt;ljt];
  ft:fillNullSym ?[bt;();(getgr tb)!getgr tb;btd`a];
  pivd:getPiv ta;
